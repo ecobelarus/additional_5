@@ -1,25 +1,32 @@
 module.exports = function check(str, bracketsConfig) {
-  
-  if (str.length % 2 !== 0) return false;
-  if (str.length === 0) return true;
-  if (str === '()[]' || str === '[]()') return true;
+    
+    if (str.length % 2 !== 0) return false;
 
+    //разбиваем переданную строку и преобразуем в массив
 
-  var firstChar = str[0];
-  var lastChar = str[str.length - 1];
+    var stringArray = str.split('');
+    var brackets = [];
 
-  function checkChars(firstChar, lastChar) {
-  	return firstChar === bracketsConfig[0][0] && lastChar === bracketsConfig[0][1];
-  }
+    //пишем двойной цикл сканирующий подмассивы
+        
+    for (var i = 0; i < str.length; i++) {
 
-  if (checkChars(firstChar, lastChar)) {
-  	var newStr = str.slice(1, str.length - 1);
-  	return true;
-  	if (newStr.length === 0) return true;
-  	return check(newStr, bracketsConfig);
-  } else {
-  	return false;
-  }
+        for (var j = 0; j < bracketsConfig.length; j++) {
 
-  return true;
+            if (stringArray[i] == bracketsConfig[j][1]
+                && brackets[brackets.length - 1] == bracketsConfig[j][0]) {
+                brackets.pop();
+
+            } else if (stringArray[i] == bracketsConfig[j][0]) {
+                brackets.push(stringArray[i]);
+            }
+        }
+    }
+
+    if (brackets.length == 0){
+        return true;
+    } else {
+        return false;
+    }
+    
 }
